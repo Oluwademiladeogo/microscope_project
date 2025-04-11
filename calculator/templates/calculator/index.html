@@ -1,0 +1,78 @@
+{% extends 'calculator/base.html' %}
+
+{% block content %}
+<div class="form-container">
+    <h2>Calculate Actual Size</h2>
+    <form method="post">
+        {% csrf_token %}
+        
+        <div class="form-group">
+            <label for="{{ form.username.id_for_label }}">Username:</label>
+            {{ form.username }}
+            {% if form.username.errors %}
+                <div class="error">{{ form.username.errors }}</div>
+            {% endif %}
+        </div>
+        
+        <div class="form-group">
+            <label for="{{ form.specimen_name.id_for_label }}">Specimen Name:</label>
+            {{ form.specimen_name }}
+            {% if form.specimen_name.errors %}
+                <div class="error">{{ form.specimen_name.errors }}</div>
+            {% endif %}
+        </div>
+        
+        <div class="form-group">
+            <label for="{{ form.microscope_size.id_for_label }}">Microscope Size (μm):</label>
+            {{ form.microscope_size }}
+            {% if form.microscope_size.errors %}
+                <div class="error">{{ form.microscope_size.errors }}</div>
+            {% endif %}
+        </div>
+        
+        <div class="form-group">
+            <label for="{{ form.magnification.id_for_label }}">Magnification:</label>
+            {{ form.magnification }}
+            {% if form.magnification.errors %}
+                <div class="error">{{ form.magnification.errors }}</div>
+            {% endif %}
+        </div>
+        
+        <button type="submit">Calculate</button>
+    </form>
+</div>
+
+<div class="table-container">
+    <h2>Stored Specimens</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Username</th>
+                <th>Specimen</th>
+                <th>Microscope Size (μm)</th>
+                <th>Magnification</th>
+                <th>Actual Size (μm)</th>
+                <th>Date Created</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for specimen in specimens %}
+            <tr>
+                <td>{{ specimen.id }}</td>
+                <td>{{ specimen.username }}</td>
+                <td>{{ specimen.specimen_name }}</td>
+                <td>{{ specimen.microscope_size }}</td>
+                <td>{{ specimen.magnification }}</td>
+                <td>{{ specimen.actual_size|floatformat:6 }}</td>
+                <td>{{ specimen.created_at|date:"Y-m-d H:i" }}</td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="7">No specimens found.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
