@@ -80,7 +80,7 @@ WSGI_APPLICATION = "microscope_project.wsgi.application"
 
 DATABASES = {
     "default": dj_database_url.config(
-       default= "postgresql://neondb_owner:npg_DP1xk4ofLCUX@ep-cold-leaf-a5xkrlic-pooler.us-east-2.aws.neon.tech/neondb?sslmode=require",
+       default= os.getenv("DATABASE_URL", "postgres://localhost:5432/microscope_db"),
         conn_max_age=600,
     )
 }
